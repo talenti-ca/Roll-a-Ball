@@ -8,6 +8,7 @@ public class Initializer : MonoBehaviour
 
 	public Transform Pickup;
 	public int PickupCount;
+	protected int GameObjectIndex;
 
 	// Use this for initialization
 	void Start () 
@@ -38,34 +39,36 @@ public class Initializer : MonoBehaviour
 			Directory.CreateDirectory (output_path);
 
 		GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject> ();
-		int i = 0;
+		GameObjectIndex = 0;
 		foreach (GameObject go in allObjects) {
 			if (go.activeInHierarchy) {
-				if (go.CompareTag("Export")) {
-					Export (output_path, i, go);
-					++i;
-				}
+				//if (go.CompareTag("Export")) {
+					Export (output_path, go);
+				//}
 			}
 		}
 	}
 
-	public void Export(string outputPath, int i, GameObject go)
+	public void Export(string outputPath, GameObject go)
 	{
-		string output_file = Path.Combine (outputPath, i.ToString () + ".txt");
 
 		MeshFilter mf = go.GetComponent<MeshFilter> ();
-		Vector3[] veticies = mf.mesh.vertices;
-		int[] triangles = mf.mesh.triangles;
-		List<Vector3> vert_list = new List<Vector3>();
+		if (mf != null) {
+			Vector3[] veticies = mf.mesh.vertices;
+			int[] triangles = mf.mesh.triangles;
+			List<Vector3> vert_list = new List<Vector3> ();
 
-		foreach (int idx in triangles)
-			vert_list.Add (veticies[idx]);
+			foreach (int idx in triangles)
+				vert_list.Add (veticies [idx]);
 
-		List<string> str_list = new List<string> ();
-		foreach (Vector3 v in vert_list) {
-			str_list.Add(v.x + " " + v.y + " " + v.z);
+			List<string> str_list = new List<string> ();
+			foreach (Vector3 v in vert_list) {
+				str_list.Add (v.x + " " + v.y + " " + v.z);
+			}
+
+			string output_file = Path.Combine (outputPath, GameObjectIndex.ToString () + ".txt");
+			File.WriteAllLines (output_file, str_list.ToArray ());
+			++GameObjectIndex;
 		}
-
-		File.WriteAllLines (output_file, str_list.ToArray());
 	}
 }
