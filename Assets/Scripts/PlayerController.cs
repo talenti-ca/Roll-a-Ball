@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public class PlayerController : MonoBehaviour {
 
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour {
 		force = Vector3.zero;
 	}
 
+	/*
 	public void Export()
 	{
 		List<Vector3> vert_list = new List<Vector3>();
@@ -72,16 +74,20 @@ public class PlayerController : MonoBehaviour {
 				if (go.CompareTag("Export")) {
 					MeshFilter mf = go.GetComponent<MeshFilter> ();
 					Vector3[] veticies = mf.mesh.vertices;
-					vert_list.AddRange (veticies);
+					int[] triangles = mf.mesh.triangles;
 
-					print (go.name +": position = " + go.transform.position);
-					print (go.name +": rotation = " + go.transform.rotation);
-					print (go.name +": localScale = " + go.transform.localScale);
-					print ("verticies:");
-					int i = 0;
-					foreach (Vector3 v in veticies) {
-						print (++i + ": " + v);
-					}
+					foreach (int idx in triangles)
+						vert_list.Add (veticies[idx]);
+
+					//print (go.name +": position = " + go.transform.position);
+					//print (go.name +": rotation = " + go.transform.rotation);
+					//print (go.name +": localScale = " + go.transform.localScale);
+					//print ("verticies:");
+
+					//int i = 0;
+					//foreach (Vector3 v in veticies) {
+					//	print (++i + ": " + v);
+					//}
 
 				}
 			}
@@ -92,7 +98,10 @@ public class PlayerController : MonoBehaviour {
 			str_list.Add(v.x + " " + v.y + " " + v.z);
 		}
 
-		string str = string.Join (";", str_list.ToArray());
-		print (str);
+		//string str = string.Join (";", str_list.ToArray());
+		//print (str);
+
+		File.WriteAllLines ("verticies.txt", str_list.ToArray());
 	}
+	*/
 }
