@@ -1,12 +1,17 @@
 clear
 clc
 % p = [0.5 -0.5 0.5;-0.5 -0.5 0.5;0.5 0.5 0.5;-0.5 0.5 0.5;0.5 0.5 -0.5;-0.5 0.5 -0.5;0.5 -0.5 -0.5;-0.5 -0.5 -0.5;0.5 0.5 0.5;-0.5 0.5 0.5;0.5 0.5 -0.5;-0.5 0.5 -0.5;0.5 -0.5 -0.5;0.5 -0.5 0.5;-0.5 -0.5 0.5;-0.5 -0.5 -0.5;-0.5 -0.5 0.5;-0.5 0.5 0.5;-0.5 0.5 -0.5;-0.5 -0.5 -0.5;0.5 -0.5 -0.5;0.5 0.5 -0.5;0.5 0.5 0.5;0.5 -0.5 0.5];
-p = importdata('verticies.txt');
+% p = importdata('output\13_Player.txt');
+p = [importdata('output\14_East Wall.txt');
+    importdata('output\15_South Wall.txt');
+    importdata('output\16_West Wall.txt');
+    importdata('output\17_North Wall.txt')]
 close all
 figure
 hold on
 grid on
-axis([-0.5 0.5 -0.5 0.5 -0.5 0.5])
+
+axis([min(p(:,1)) max(p(:,1)) min(p(:,2)) max(p(:,2)) min(p(:,3)) max(p(:,3))])
 az = 30;
 el = 30;
 view(az, el);
@@ -28,3 +33,4 @@ for t = 1 : k : n
     end
     plotline(pts(k,:), pts(1,:), dt)
 end
+

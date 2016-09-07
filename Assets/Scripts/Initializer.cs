@@ -51,24 +51,36 @@ public class Initializer : MonoBehaviour
 
 	public void Export(string outputPath, GameObject go)
 	{
-
 		MeshFilter mf = go.GetComponent<MeshFilter> ();
 		if (mf != null) {
 			Vector3[] veticies = mf.mesh.vertices;
 			int[] triangles = mf.mesh.triangles;
 			List<Vector3> vert_list = new List<Vector3> ();
 
-			foreach (int idx in triangles)
-				vert_list.Add (veticies [idx]);
+			var local2world_transform = go.transform;
+
+			foreach (int idx in triangles) {
+				Vector3 transformed_point = local2world_transform.TransformPoint (veticies [idx]);
+				//Vector3 transformed_point = Vector3.Scale(veticies [idx], local2world_transform.localScale);
+				//transformed_point = local2world_transform.TransformPoint (transformed_point);
+				//+ local2world_transform.position;
+				vert_list.Add (transformed_point);
+			}
 
 			List<string> str_list = new List<string> ();
 			foreach (Vector3 v in vert_list) {
-				str_list.Add (v.x + " " + v.y + " " + v.z);
+//				var x = local2world_transform.position.x + v.x;
+//				var y = local2world_transform.position.y + v.y;
+//				var z = local2world_transform.position.z + v.z;
+				var x = v.x;
+				var y = v.y;
+				var z = v.z;
+				str_list.Add (x + " " + y + " " + z);
 			}
 
-			string output_file = Path.Combine (outputPath, GameObjectIndex.ToString () + ".txt");
-			File.WriteAllLines (output_file, str_list.ToArray ());
 			++GameObjectIndex;
+			string output_file = Path.Combine (outputPath, GameObjectIndex.ToString () + "_" + go.name + ".txt");
+			File.WriteAllLines (output_file, str_list.ToArray ());
 		}
 	}
 }
