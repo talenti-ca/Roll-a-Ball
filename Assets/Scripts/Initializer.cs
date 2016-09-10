@@ -57,25 +57,21 @@ public class Initializer : MonoBehaviour
 			int[] triangles = mf.mesh.triangles;
 			List<Vector3> vert_list = new List<Vector3> ();
 
-			var local2world_transform = go.transform;
-
 			foreach (int idx in triangles) {
-				Vector3 transformed_point = local2world_transform.TransformPoint (veticies [idx]);
-				//Vector3 transformed_point = Vector3.Scale(veticies [idx], local2world_transform.localScale);
-				//transformed_point = local2world_transform.TransformPoint (transformed_point);
-				//+ local2world_transform.position;
+				//Vector3 transformed_point = veticies [idx];
+				Vector3 transformed_point = go.transform.TransformPoint (veticies [idx]);
 				vert_list.Add (transformed_point);
+
+//				if (go.name.Contains ("Wall")) {
+//					GameObject sphere = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+//					sphere.transform.position = transformed_point + new Vector3 (0, 1, 0);
+//					sphere.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
+//				}
 			}
 
 			List<string> str_list = new List<string> ();
 			foreach (Vector3 v in vert_list) {
-//				var x = local2world_transform.position.x + v.x;
-//				var y = local2world_transform.position.y + v.y;
-//				var z = local2world_transform.position.z + v.z;
-				var x = v.x;
-				var y = v.y;
-				var z = v.z;
-				str_list.Add (x + " " + y + " " + z);
+				str_list.Add (v.x + " " + v.y + " " + v.z);
 			}
 
 			++GameObjectIndex;
